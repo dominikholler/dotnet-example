@@ -1,0 +1,32 @@
+name: Build Containers
+
+on:
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build-linux:
+    name: Build Linux Container
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -f Containerfile -t dotnet-example:linux .
+
+    - name: Test Linux Container
+      run: docker run --rm dotnet-example:linux
+
+  build-windows:
+    name: Build Windows Container
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -f Containerfile.windows -t dotnet-example:windows .
+
+    - name: Test Windows Container
+      run: docker run --rm dotnet-example:windows
